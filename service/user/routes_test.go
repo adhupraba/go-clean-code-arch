@@ -9,7 +9,7 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"github.com/adhupraba/shopping-backend/types"
+	"github.com/adhupraba/ecom/types"
 )
 
 func TestUserServiceHandlers(t *testing.T) {

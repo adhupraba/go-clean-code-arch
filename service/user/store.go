@@ -7,7 +7,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/adhupraba/shopping-backend/types"
+	"github.com/adhupraba/ecom/types"
 )
 
 type Store struct {
@@ -16,21 +16,6 @@ type Store struct {
 
 func NewStore(db *pgxpool.Pool) *Store {
 	return &Store{db}
-}
-
-func (s *Store) GetUserByEmail(email string) (*types.User, error) {
-	row := s.db.QueryRow(context.Background(), "SELECT * FROM users WHERE email = ?", email)
-	u, err := scanRowIntoUser(row)
-
-	if err != nil {
-		return nil, err
-	}
-
-	if u.ID == 0 {
-		return nil, fmt.Errorf("user not found")
-	}
-
-	return u, nil
 }
 
 func scanRowIntoUser(row pgx.Row) (*types.User, error) {
@@ -52,10 +37,46 @@ func scanRowIntoUser(row pgx.Row) (*types.User, error) {
 	return user, nil
 }
 
+func (s *Store) GetUserByEmail(email string) (*types.User, error) {
+	row := s.db.QueryRow(context.Background(), "SELECT * FROM users WHERE email = $1", email)
+	u, err := scanRowIntoUser(row)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if u.ID == 0 {
+		return nil, fmt.Errorf("user not found")
+	}
+
+	return u, nil
+}
+
 func (s *Store) GetUserByID(id int) (*types.User, error) {
-	return nil, nil
+	row := s.db.QueryRow(context.Background(), "SELECT * FROM users WHERE id = $1", id)
+	u, err := scanRowIntoUser(row)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if u.ID == 0 {
+		return nil, fmt.Errorf("user not found")
+	}
+
+	return u, nil
 }
 
 func (s *Store) CreateUser(user types.User) error {
+	_, err := s.db.Exec(
+		context.Background(),
+		`INSERT INTO users ("firstName", "lastName", email, password) VALUES ($1, $2, $3, $4)`,
+		user.FirstName, user.LastName, user.Email, user.Password,
+	)
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

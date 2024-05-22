@@ -9,7 +9,7 @@ import (
 	"github.com/golang-migrate/migrate/v4/database/pgx/v5"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 
-	"github.com/adhupraba/shopping-backend/config"
+	"github.com/adhupraba/ecom/config"
 )
 
 func main() {

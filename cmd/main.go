@@ -6,9 +6,9 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/adhupraba/shopping-backend/cmd/api"
-	"github.com/adhupraba/shopping-backend/config"
-	"github.com/adhupraba/shopping-backend/db"
+	"github.com/adhupraba/ecom/cmd/api"
+	"github.com/adhupraba/ecom/config"
+	"github.com/adhupraba/ecom/db"
 )
 
 func main() {
@@ -20,7 +20,7 @@ func main() {
 
 	initStorage(pgx)
 
-	server := api.NewAPIServer(":"+config.Envs.ServerPort, pgx)
+	server := api.NewAPIServer("0.0.0.0:"+config.Envs.ServerPort, pgx)
 
 	if err := server.Run(); err != nil {
 		log.Fatal(err)

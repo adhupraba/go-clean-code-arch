@@ -1,11 +1,14 @@
 build:
-	@go build -o bin/shopping-backend cmd/main.go
+	@go build -o bin/ecom cmd/main.go
 
 test:
 	@go test -v ./...
 
-run: build
-	@./bin/shopping-backend
+run:
+	@./bin/ecom
+
+dev:
+	@air
 
 migration:
 	@migrate create -ext sql -dir cmd/migrate/migrations $(filter-out $@,$(MAKECMDGOALS))

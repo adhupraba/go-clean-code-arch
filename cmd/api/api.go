@@ -7,7 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/adhupraba/shopping-backend/service/user"
+	"github.com/adhupraba/ecom/service/user"
 )
 
 type APIServer struct {
