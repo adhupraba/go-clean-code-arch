@@ -15,7 +15,16 @@ func ParseJson(r *http.Request, payload any) error {
 		return fmt.Errorf("missing request body")
 	}
 
-	return json.NewDecoder(r.Body).Decode(payload)
+	if err := json.NewDecoder(r.Body).Decode(payload); err != nil {
+		return err
+	}
+
+	if err := Validate.Struct(payload); err != nil {
+		errors := err.(validator.ValidationErrors)
+		return fmt.Errorf("invalid payload %v", errors)
+	}
+
+	return nil
 }
 
 func WriteJson(w http.ResponseWriter, status int, v any) error {

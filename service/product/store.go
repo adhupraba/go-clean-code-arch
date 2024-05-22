@@ -58,3 +58,17 @@ func (s *Store) GetProducts() ([]types.Product, error) {
 
 	return products, nil
 }
+
+func (s *Store) CreateProduct(product types.Product) error {
+	_, err := s.db.Exec(
+		context.Background(),
+		`INSERT INTO products (name, description, image, price, quantity) VALUES ($1, $2, $3, $4, $5)`,
+		product.Name, product.Description, product.Image, product.Price, product.Quantity,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
